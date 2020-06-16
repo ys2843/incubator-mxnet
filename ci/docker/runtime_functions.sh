@@ -1590,8 +1590,8 @@ build_r_docs() {
     pip install ../python_docs/themes/mx-theme
     # pip install -e /work/mxnet/python --user
 
-    mkdir docs/r_docs/man
-    cp -rf R-package/man/ docs/r_docs/api/man/
+    mkdir -p api/man
+    cp -rf /work/mxnet/R-package/man/. api/man/
 
     make clean
     make docs
