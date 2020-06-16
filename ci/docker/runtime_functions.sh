@@ -1587,8 +1587,8 @@ build_r_docs() {
     eval "$(/work/miniconda/bin/conda shell.bash hook)"
     conda env create -f environment.yml -p /work/conda_env
     conda activate /work/conda_env
-    pip install themes/mx-theme
-    pip install -e /work/mxnet/python --user
+    pip install ../python_docs/themes/mx-theme
+    # pip install -e /work/mxnet/python --user
 
     mkdir docs/r_docs/man
     cp -rf R-package/man/ docs/r_docs/api/man/
