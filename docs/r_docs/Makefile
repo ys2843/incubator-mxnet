@@ -19,5 +19,8 @@ help:
 %: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-doc:
+docs:
 	Rscript ./scripts/Rdoc2SphinxDoc.R 
+
+clean:
+	rm -rf _build

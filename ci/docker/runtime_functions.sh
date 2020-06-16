@@ -1573,23 +1573,39 @@ build_r_docs() {
     pushd .
 
     build_docs_setup
-    r_root='R-package'
-    r_pdf='mxnet-r-reference-manual.pdf'
-    r_build='build'
-    docs_build_path="$r_root/$r_build/$r_pdf"
-    artifacts_path='docs/_build/r-artifacts.tgz'
+    # r_root='R-package'
+    # r_pdf='mxnet-r-reference-manual.pdf'
+    # r_build='build'
+    # docs_build_path="$r_root/$r_build/$r_pdf"
+    # artifacts_path='docs/_build/r-artifacts.tgz'
 
-    mkdir -p $r_root/$r_build
+    # mkdir -p $r_root/$r_build
 
     unittest_ubuntu_minimal_R
 
-    pushd $r_root
+    eval "$(/work/miniconda/bin/conda shell.bash hook)"
+    conda env create -f environment.yml -p /work/conda_env
+    conda activate /work/conda_env
+    pip install themes/mx-theme
+    pip install -e /work/mxnet/python --user
 
-    R_LIBS=/tmp/r-site-library R CMD Rd2pdf . --no-preview --encoding=utf8 -o $r_build/$r_pdf
+    mkdir docs/r_docs/man
+    cp -rf R-package/man/ docs/r_docs/api/man/
+
+    pushd docs/r_docs
+    make clean
+    make docs
+    make html
+
+    GZIP=-9 tar zcvf r-artifacts.tgz -C _build/html .
+    mv r-artifacts.tgz /work/mxnet/docs/_build/
+
+    # pushd $r_root
+    # R_LIBS=/tmp/r-site-library R CMD Rd2pdf . --no-preview --encoding=utf8 -o $r_build/$r_pdf
 
     popd
 
-    GZIP=-9 tar zcvf $artifacts_path $docs_build_path
+    # GZIP=-9 tar zcvf $artifacts_path $docs_build_path
 
     popd
 }
