@@ -1583,6 +1583,7 @@ build_r_docs() {
 
     unittest_ubuntu_minimal_R
 
+    pushd docs/r_docs
     eval "$(/work/miniconda/bin/conda shell.bash hook)"
     conda env create -f environment.yml -p /work/conda_env
     conda activate /work/conda_env
@@ -1592,7 +1593,6 @@ build_r_docs() {
     mkdir docs/r_docs/man
     cp -rf R-package/man/ docs/r_docs/api/man/
 
-    pushd docs/r_docs
     make clean
     make docs
     make html
