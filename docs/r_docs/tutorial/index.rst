@@ -8,12 +8,17 @@ Each tutorial is a self-contained Juypter Notebook which you can run and modify 
 .. toctree::
    :maxdepth: 1
    
-   classify_real_image_with_pretrained_model
-   char_rnn_model
-   custom_iterator
-   multi_dim_lstm
-   ndarray
-   symbol
+   fiveMinutesNeuralNetwork
+   DigitsClassification
+   ClassifyImageWithPretrainedModel
+   charRnn
+   TimeSeriesLSTM
+   NDArray
+   Symbol
+   CallbackFunction
+   CustomLossFunction
+   CustomIterator
+
 
 **Note**: To run the `tutorial Notebooks <mxnetRtutorials.zip>`_ on your own machine, you must first install the **mxnet** R package plus `Jupyter Notebook with the R kernel <https://www.datacamp.com/community/blog/jupyter-notebook-r>`_. Subsequently tell Juypter to use the R kernel after opening each tutorial notebook (after opening the notebook, click on: ``Kernel`` > ``Change Kernel``> ``R``).
 

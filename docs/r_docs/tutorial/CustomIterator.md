@@ -15,12 +15,14 @@
 <!--- specific language governing permissions and limitations -->
 <!--- under the License. -->
 
-# Custom Iterator Tutorial
+
+Custom Iterator Tutorial
+========================
 
 This tutorial provides a guideline on how to use and write custom iterators, which can very useful when having a dataset that does not fit into memory.
 
-## Getting the data
-
+Getting the data
+----------
 The data we are going to use is the [MNIST dataset](https://yann.lecun.com/exdb/mnist/) in CSV format, the data can be found in this [web](https://pjreddie.com/projects/mnist-in-csv/).
 
 To download the data:
@@ -32,8 +34,8 @@ wget http://pjreddie.com/media/files/mnist_test.csv
 
 You'll get two files, `mnist_train.csv` that contains 60.000 examples of hand written numbers and `mxnist_test.csv` that contains 10.000 examples. The first element of each line in the CSV is the label, which is a number between 0 and 9. The rest of the line are 784 numbers between 0 and 255, corresponding to the levels of grey of a matrix of 28x28. Therefore, each line contains an image of 28x28 pixels of a hand written number and its true label.
 
-## Custom CSV Iterator
-
+Custom CSV Iterator
+----------
 Next we are going to create a custom CSV Iterator based on the [C++ CSVIterator class](https://github.com/dmlc/mxnet/blob/master/src/io/iter_csv.cc).
 
 For that we are going to use the R function `mx.io.CSVIter` as a base class. This class has as parameters `data.csv, data.shape, batch.size` and two main functions, `iter.next()` that calls the iterator in the next batch of data and `value()` that returns the train data and the label.
@@ -99,7 +101,6 @@ CustomCSVIter <- setRefClass("CustomCSVIter",
                              	)
                             )
 ```
-
 Finally we are going to add the rest of the functions needed for the training to work correctly. The final `CustomCSVIter` looks like this:
 
 ```r
@@ -149,7 +150,9 @@ batch.size <- 100
 train.iter <- CustomCSVIter$new(iter = NULL, data.csv = "mnist_train.csv", data.shape = 28, batch.size = batch.size)
 ```
 
-## Conclusion
+
+Conclusion
+----------
 
 We have shown how to create a custom CSV Iterator by extending the class `mx.io.CSVIter`. In our class, we iteratively read from a CSV file a batch of data that will be transformed and then processed in the stochastic gradient descent optimization. That way, we are able to manage CSV files that are bigger than the memory of the machine we are using.
 
