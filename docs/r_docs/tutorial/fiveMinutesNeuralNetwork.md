@@ -33,7 +33,7 @@ require(mxnet)
 
 We load some data for a simple classification problem with two classes:
 
-```R2}
+```R
 data(Sonar, package="mlbench")
 Sonar[,61] = as.numeric(Sonar[,61])-1  # the target labels
 set.seed(0)
@@ -66,7 +66,7 @@ In the **mxnet** package, we have a function called ``mx.mlp`` for building a ge
 
 The following code shows an example usage of ``mx.mlp``:
 
-```R4}
+```R
 mx.set.seed(0)
 model <- mx.mlp(train.x, train.y, hidden_node=c(200,100), out_node=2, out_activation="softmax",
                 num.round=20, array.batch.size=15, learning.rate=0.1, momentum=0.9,
