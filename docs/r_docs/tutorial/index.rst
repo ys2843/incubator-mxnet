@@ -13,8 +13,8 @@ Each tutorial is a self-contained Juypter Notebook which you can run and modify 
    ClassifyImageWithPretrainedModel
    charRnn
    TimeSeriesLSTM
-   NDArray
-   Symbol
+   ndarray
+   symbol
    CallbackFunction
    CustomLossFunction
    CustomIterator
