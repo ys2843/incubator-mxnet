@@ -7,7 +7,8 @@ Each tutorial is a self-contained Juypter Notebook which you can run and modify 
 
 .. toctree::
    :maxdepth: 1
-   
+   :titlesonly:
+
    fiveMinutesNeuralNetwork
    DigitsClassification
    ClassifyImageWithPretrainedModel
