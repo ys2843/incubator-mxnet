@@ -109,5 +109,5 @@ be more memory efficient than CXXNet and gets to the same runtime with
 greater flexibility.
 
 ## Next Steps
-* [Classify Real-World Images with Pre-trained Model](/api/r/docs/tutorials/classify_real_image_with_pretrained_model)
-* [Character Language Model using RNN](/api/r/docs/tutorials/char_rnn_model)
+* [Classify Real-World Images with Pre-trained Model](/tutorials/ClassifyImageWithPretrainedModel)
+* [Character Language Model using RNN](/tutorials/charRnn)

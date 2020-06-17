@@ -216,6 +216,6 @@ The actual computations are finished, allowing us to copy the results someplace 
 the results.
 
 ## Next Steps
-* [Symbol](/api/r/docs/tutorials/symbol)
-* [Classify Real-World Images with Pre-trained Model](/api/r/docs/tutorials/classify_real_image_with_pretrained_model)
-* [Character Language Model using RNN](/api/r/docs/tutorials/char_rnn_model)
+* [Symbol](/tutorials/symbol)
+* [Classify Real-World Images with Pre-trained Model](/tutorials/ClassifyImageWithPretrainedModel)
+* [Character Language Model using RNN](/tutorials/charRnn)

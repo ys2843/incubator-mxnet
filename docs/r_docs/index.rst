@@ -11,4 +11,5 @@ For more information about MXNet, see the `main site <http://mxnet.incubator.apa
    :maxdepth: 1
    
    api/index
-   tutorial/index
+
+   tutorials/index
