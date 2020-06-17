@@ -44,103 +44,103 @@ The R Custom Iterator needs to inherit from the C++ data iterator class, for tha
 
 ```r
 CustomCSVIter <- setRefClass("CustomCSVIter",
-								fields=c("iter", "data.csv", "data.shape", "batch.size"),
-								contains = "Rcpp_MXArrayDataIter",
-								#...
-                            )
+  fields=c("iter", "data.csv", "data.shape", "batch.size"),
+  contains = "Rcpp_MXArrayDataIter",
+  #...
+)
 ```
 
 The next step is to initialize the class. For that we call the base `mx.io.CSVIter` and fill the rest of the fields.
 
 ```r
 CustomCSVIter <- setRefClass("CustomCSVIter",
-								fields=c("iter", "data.csv", "data.shape", "batch.size"),
-								contains = "Rcpp_MXArrayDataIter",
-								methods=list(
-	                             	initialize=function(iter, data.csv, data.shape, batch.size){
-										feature_len <- data.shape*data.shape + 1
-										csv_iter <- mx.io.CSVIter(data.csv=data.csv, data.shape=c(feature_len), batch.size=batch.size)
-										.self$iter <- csv_iter
-										.self$data.csv <- data.csv
-										.self$data.shape <- data.shape
-										.self$batch.size <- batch.size
-										.self
-	                               	},
-                             	#...
-                             	)
-                            )
+  fields=c("iter", "data.csv", "data.shape", "batch.size"),
+  contains = "Rcpp_MXArrayDataIter",
+  methods=list(
+    initialize=function(iter, data.csv, data.shape, batch.size){
+      feature_len <- data.shape*data.shape + 1
+      csv_iter <- mx.io.CSVIter(data.csv=data.csv, data.shape=c(feature_len), batch.size=batch.size)
+      .self$iter <- csv_iter
+      .self$data.csv <- data.csv
+      .self$data.shape <- data.shape
+      .self$batch.size <- batch.size
+      .self
+    },
+    #...
+  )
+)
 ```
 
 So far there is no difference between the original class and the custom class. Let's implement the function `value()`. In this case what we are going to do is transform the data that comes from the original class as an array of 785 numbers into a matrix of 28x28 and a label. We will also normalize the training data to be between 0 and 1.
 
 ```r
 CustomCSVIter <- setRefClass("CustomCSVIter",
-								fields=c("iter", "data.csv", "data.shape", "batch.size"),
-								contains = "Rcpp_MXArrayDataIter",
-								methods=list(
-	                             	initialize=function(iter, data.csv, data.shape, batch.size){
-										feature_len <- data.shape*data.shape + 1
-										csv_iter <- mx.io.CSVIter(data.csv=data.csv, data.shape=c(feature_len), batch.size=batch.size)
-										.self$iter <- csv_iter
-										.self$data.csv <- data.csv
-										.self$data.shape <- data.shape
-										.self$batch.size <- batch.size
-										.self
-	                               	},
-									value=function(){
-										val <- as.array(.self$iter$value()$data)
-										val.x <- val[-1,]
-										val.y <- val[1,]
-										val.x <- val.x/255
-										dim(val.x) <- c(data.shape, data.shape, 1, ncol(val.x))
-										val.x <- mx.nd.array(val.x)
-										val.y <- mx.nd.array(val.y)
-										list(data=val.x, label=val.y)
-									},
-                             	#...
-                             	)
-                            )
+  fields=c("iter", "data.csv", "data.shape", "batch.size"),
+  contains = "Rcpp_MXArrayDataIter",
+  methods=list(
+    initialize=function(iter, data.csv, data.shape, batch.size){
+      feature_len <- data.shape*data.shape + 1
+      csv_iter <- mx.io.CSVIter(data.csv=data.csv, data.shape=c(feature_len), batch.size=batch.size)
+      .self$iter <- csv_iter
+      .self$data.csv <- data.csv
+      .self$data.shape <- data.shape
+      .self$batch.size <- batch.size
+      .self
+    },
+    value=function(){
+      val <- as.array(.self$iter$value()$data)
+      val.x <- val[-1,]
+      val.y <- val[1,]
+      val.x <- val.x/255
+      dim(val.x) <- c(data.shape, data.shape, 1, ncol(val.x))
+      val.x <- mx.nd.array(val.x)
+      val.y <- mx.nd.array(val.y)
+      list(data=val.x, label=val.y)
+    },
+    #...
+  )
+)
 ```
 Finally we are going to add the rest of the functions needed for the training to work correctly. The final `CustomCSVIter` looks like this:
 
 ```r
 CustomCSVIter <- setRefClass("CustomCSVIter",
-								fields=c("iter", "data.csv", "data.shape", "batch.size"),
-								contains = "Rcpp_MXArrayDataIter",
-								methods=list(
-	                             	initialize=function(iter, data.csv, data.shape, batch.size){
-										feature_len <- data.shape*data.shape + 1
-										csv_iter <- mx.io.CSVIter(data.csv=data.csv, data.shape=c(feature_len), batch.size=batch.size)
-										.self$iter <- csv_iter
-										.self$data.csv <- data.csv
-										.self$data.shape <- data.shape
-										.self$batch.size <- batch.size
-										.self
-	                               	},
-									value=function(){
-										val <- as.array(.self$iter$value()$data)
-										val.x <- val[-1,]
-										val.y <- val[1,]
-										val.x <- val.x/255
-										dim(val.x) <- c(data.shape, data.shape, 1, ncol(val.x))
-										val.x <- mx.nd.array(val.x)
-										val.y <- mx.nd.array(val.y)
-										list(data=val.x, label=val.y)
-									},
-									iter.next=function(){
-										.self$iter$iter.next()
-									},
-									reset=function(){
-										.self$iter$reset()
-									},
-									num.pad=function(){
-										.self$iter$num.pad()
-									},
-									finalize=function(){
-										.self$iter$finalize()
-									}
-                             	)
-                            )
+  fields=c("iter", "data.csv", "data.shape", "batch.size"),
+  contains = "Rcpp_MXArrayDataIter",
+  methods=list(
+    initialize=function(iter, data.csv, data.shape, batch.size){
+      feature_len <- data.shape*data.shape + 1
+      csv_iter <- mx.io.CSVIter(data.csv=data.csv, data.shape=c(feature_len), batch.size=batch.size)
+      .self$iter <- csv_iter
+      .self$data.csv <- data.csv
+      .self$data.shape <- data.shape
+      .self$batch.size <- batch.size
+      .self
+    },
+    value=function(){
+      val <- as.array(.self$iter$value()$data)
+      val.x <- val[-1,]
+      val.y <- val[1,]
+      val.x <- val.x/255
+      dim(val.x) <- c(data.shape, data.shape, 1, ncol(val.x))
+      val.x <- mx.nd.array(val.x)
+      val.y <- mx.nd.array(val.y)
+      list(data=val.x, label=val.y)
+    },
+    iter.next=function(){
+      .self$iter$iter.next()
+    },
+    reset=function(){
+      .self$iter$reset()
+    },
+    num.pad=function(){
+      .self$iter$num.pad()
+    },
+    finalize=function(){
+      .self$iter$finalize()
+    }
+  )
+)
 ```
 
 To call the class we can just do:
