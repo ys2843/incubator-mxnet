@@ -22,7 +22,7 @@ This tutorial shows how to define and use a customized loss function to guide tr
 
 Let’s begin with a small regression example. We can build, train, and evaluate a regression model on the Boston Housing dataset with the following code:
 
-```{.python .input  n=1}
+```R
 data(BostonHousing, package = "mlbench")
 BostonHousing[, sapply(BostonHousing, is.factor)] <-
   as.numeric(as.character(BostonHousing[, sapply(BostonHousing, is.factor)]))
@@ -35,7 +35,7 @@ test.x = data.matrix(BostonHousing[test.ind, -14])
 test.y = BostonHousing[test.ind, 14]
 ```
 
-```{.python .input  n=2}
+```R
 require(mxnet)
 data <- mx.symbol.Variable("data")
 label <- mx.symbol.Variable("label")
@@ -76,7 +76,7 @@ We still use the same regression task and neural network architecture from the p
 
 First, we construct the pseudo-Huber loss function below. Note that all operations in our loss function must be defined in terms of **mxnet** ``Symbol`` objects rather than R arrays, in order to allow for subsequent automatic differentiation of the loss during network training.  The **mnxnet** package contains a variety of ``Symbol`` operations you can combine to form pretty much any loss function.  The loss should take in model predictions and the corresponding ground truth labels (as well as other auxiliary parameters, such as the ``delta`` value used in the Huber loss).
 
-```{.python .input  n=4}
+```R
 pseudoHuberLoss <- function(pred, label, delta=1) {
     diff <- mx.symbol.Reshape(fc2, shape = 0) - label
     (mx.symbol.sqrt(1 + mx.symbol.square(diff/delta)) - 1) * delta^2
@@ -85,7 +85,7 @@ pseudoHuberLoss <- function(pred, label, delta=1) {
 
 Define our neural network archictecture which makes use of this custom loss function:
 
-```{.python .input  n=5}
+```R
 data <- mx.symbol.Variable("data")
 label <- mx.symbol.Variable("label")
 fc1 <- mx.symbol.FullyConnected(data, num_hidden = 14, name = "fc1")
@@ -96,7 +96,7 @@ lro2 <- mx.symbol.MakeLoss(pseudoHuberLoss(fc2,label), name="psuedohuber")
 
 Now we can train the network just as usual:
 
-```{.python .input  n=6}
+```R
 mx.set.seed(0)
 model2 <- mx.model.FeedForward.create(lro2, X = train.x, y = train.y,
                                       ctx = mx.cpu(),
@@ -115,7 +115,7 @@ Finally, we can evaluate the pseudo-Huber loss of our trained network on the tes
 Thus, we cannot simply call ``predict`` on ``model2``.
 Instead, here's how to get predictions from this trained model:
 
-```{.python .input  n=8}
+```R
 # pred.wrong <- predict(model2, test.x) # This would produce INVALID predictions.
 internals = internals(model2$symbol)
 fc_symbol = internals[[match("fc2_output", outputs(internals))]]

@@ -22,7 +22,7 @@ This 5 minute tutorial is designed for new users of the mxnet package for R. It 
 
 First, we need to load the required R packages:
 
-```{.python .input .R  n=1}
+```R
 if (!require(mlbench)) {
     install.packages('mlbench')
 }
@@ -33,7 +33,7 @@ require(mxnet)
 
 We load some data for a simple classification problem with two classes:
 
-```{.python .input .R  n=2}
+```R2}
 data(Sonar, package="mlbench")
 Sonar[,61] = as.numeric(Sonar[,61])-1  # the target labels
 set.seed(0)
@@ -66,7 +66,7 @@ In the **mxnet** package, we have a function called ``mx.mlp`` for building a ge
 
 The following code shows an example usage of ``mx.mlp``:
 
-```{.python .input .R  n=4}
+```R4}
 mx.set.seed(0)
 model <- mx.mlp(train.x, train.y, hidden_node=c(200,100), out_node=2, out_activation="softmax",
                 num.round=20, array.batch.size=15, learning.rate=0.1, momentum=0.9,
@@ -81,20 +81,20 @@ You can see the training accuracy in each epoch as training progresses.
 
 To summarize what operations are performed by our network and its overall architecture, view the computation graph:
 
-```{.python .input .R  n=5}
+```R
 graph.viz(model$symbol)
 ```
 
 It is easy to use our trained model to make predictions regarding the probability of each class for our test examples:
 
-```{.python .input  n=9}
+```R
 preds = predict(model, test.x)
 ```
 
 Note for that for multi-class predictions, **mxnet** outputs nclass x nexamples, with each row corresponding to the probability of the class.
 We can easily evaluate the quality of these predictions:
 
-```{.python .input  n=10}
+```R
 p = max.col(t(preds))-1
     table(p, test.y)
 ```
@@ -103,7 +103,7 @@ p = max.col(t(preds))-1
 
 Next, we load data for a simple regression task:
 
-```{.python .input  n=48}
+```R
 data(BostonHousing, package="mlbench")
 set.seed(0)
 train.ind = sample(1:nrow(BostonHousing), size=ceiling(0.7*nrow(BostonHousing)))
@@ -116,7 +116,7 @@ summary(train.y)  # distribution of target values in training data
 
 We can simply invoke ``mx.mlp`` again to train a feedforward neural network for regression. We just need to  appropriately change ``out_activation`` and ``eval.metric`` to tell our model to employ the root mean-square error objective, which is more appropriate for predicting continuous values (we also set ``out_node`` = 1 to reflect the fact that model should now only output a single value as its prediction):
 
-```{.python .input  n=69}
+```R
 mx.set.seed(0)
 model <- mx.mlp(train.x, train.y, hidden_node=c(20,10), out_node=1, out_activation="rmse",
                 num.round=20, array.batch.size=15, learning.rate=1e-4, momentum=0.9,
@@ -126,7 +126,7 @@ model <- mx.mlp(train.x, train.y, hidden_node=c(20,10), out_node=1, out_activati
 However, this time we are also going to introduce a flexible way to configure neural networks in **mxnet** via the ``Symbol`` system.  The ``Symbol`` system takes care of the links among nodes, activation, dropout ratio, etc. 
 We can configure a multi-layer neural network as follows:
 
-```{.python .input  n=71}
+```R
 # Define the input data
     data <- mx.symbol.Variable("data")
     # A fully connected hidden layer
@@ -142,7 +142,7 @@ What matters for a regression task is mainly the last function. It enables the n
 
 Using ``mx.model.FeedForward.create``, we can instantiate the parameters of the network structure defined above and learn good values for them based on our training dataset:
 
-```{.python .input  n=141}
+```R
 mx.set.seed(0)
 model <- mx.model.FeedForward.create(lro, X=train.x, y=train.y,
                                      ctx=mx.cpu(), num.round=20, array.batch.size=15,
@@ -151,7 +151,7 @@ model <- mx.model.FeedForward.create(lro, X=train.x, y=train.y,
 
 It is again easy to use this learned model to make predictions on new data points and evaluate the quality of these predictions:
 
-```{.python .input  n=147}
+```R
 preds = predict(model, test.x)
 summary(as.vector(preds))
 sprintf("test RMSE = %f", sqrt(mean((preds-test.y)^2)))
@@ -160,7 +160,7 @@ sprintf("test RMSE = %f", sqrt(mean((preds-test.y)^2)))
 Currently, **mxnet** has four predefined evaluation metrics: "accuracy", "rmse", "mae", and "rmsle". 
 You can also define your own metrics via the provided interface:
 
-```{.python .input  n=148}
+```R
 demo.metric.mae <- mx.metric.custom("demo_mae", function(label, pred) {
       pred <- mx.nd.reshape(pred, shape = 0)
       res <- mx.nd.mean(mx.nd.abs(label-pred))
@@ -170,14 +170,14 @@ demo.metric.mae <- mx.metric.custom("demo_mae", function(label, pred) {
 
 As an example, we have defined the mean absolute error metric ourselves above. Now, we can simply plug it into the training function:
 
-```{.python .input  n=149}
+```R
 mx.set.seed(0)
 model <- mx.model.FeedForward.create(lro, X=train.x, y=train.y,
                                      ctx=mx.cpu(), num.round=20, array.batch.size=15,
                                      learning.rate=1e-6, momentum=0.9, eval.metric=demo.metric.mae)
 ```
 
-```{.python .input  n=150}
+```R
 preds = predict(model, test.x)
 sprintf("test MAE = %f", mean(abs(preds-test.y)))
 ```

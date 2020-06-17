@@ -28,7 +28,7 @@ This tutorial shows how to use MXNet in R to develop neural network models for c
 
 First, let's download the data from [Kaggle](http://www.kaggle.com/c/digit-recognizer/data) and put it in a ``data/`` sub-folder inside the current working directory.
 
-```{.python .input  n=1}
+```R
 if (!dir.exists('data')) {
     dir.create('data')
 }
@@ -53,7 +53,7 @@ If they fail, you can instead manually get the data yourself via the following s
 
 Once the downloads have completed, we can read the data into R and convert it to matrices:
 
-```{.python .input  n=2}
+```R
 require(mxnet)
 train <- read.csv('data/train.csv', header=TRUE)
 test <- read.csv('data/test.csv', header=TRUE)
@@ -69,7 +69,7 @@ Every image is represented as a single row in ``train.features``/``test.features
 
 Let's view an example image:
 
-```{.python .input  n=3}
+```R
 i = 10 # change this value to view different examples from the training data
 
 pixels = matrix(train_x[,i],nrow=28, byrow=TRUE)
@@ -80,7 +80,7 @@ image(t(apply(pixels, 2, rev)) , col=gray((0:255)/255),
 The proportion of each label within the training data is known to significantly affect the results of multi-class classification models.
 We can see that in our MNIST training set, the number of images from each digit is fairly evenly distributed:
 
-```{.python .input  n=4}
+```R
 table(train_y)
 ```
 
@@ -88,7 +88,7 @@ table(train_y)
 
 Now that we have the data, let’s create a neural network model. Here, we can use the ``Symbol`` framework in MXNet to declare our desired network architecture:
 
-```{.python .input  n=5}
+```R
 data <- mx.symbol.Variable("data")
 fc1 <- mx.symbol.FullyConnected(data, name="fc1", num_hidden=128)
 act1 <- mx.symbol.Activation(fc1, name="relu1", act_type="relu")
@@ -114,7 +114,7 @@ This is a standard fully-connected layer that takes in ``data`` as its input, ca
 We are almost ready to train the neural network we have defined. 
 Before we start the computation, let’s decide which device to use:
 
-```{.python .input  n=6}
+```R
 devices <- mx.cpu()
 ```
 
@@ -122,7 +122,7 @@ This command tells **mxnet** to use the CPU for all neural network computations.
 
 Now, you can run the following command to train the neural network!
 
-```{.python .input  n=7}
+```R
 mx.set.seed(0)
 model <- mx.model.FeedForward.create(softmax, X=train_x, y=train_y,
                                      ctx=devices, num.round=10, array.batch.size=100,
@@ -140,7 +140,7 @@ By declaring we are interested in ``mx.metric.accuracy`` in the above command, t
 
 We can easily use our trained network to make predictions on the test data:
 
-```{.python .input  n=8}
+```R
 preds <- predict(model, test_x)
 predicted_labels <- max.col(t(preds)) - 1
 table(predicted_labels)
@@ -151,7 +151,7 @@ There are 28,000 test examples, and our model produces 10 numbers for each examp
  
 Let's view a particular prediction:
 
-```{.python .input  n=9}
+```R
 i = 2  # change this to view the predictions for different test examples
 
 class_probs_i = preds[,i]
@@ -164,7 +164,7 @@ image(t(apply(matrix(test_x[,i],nrow=28, byrow=TRUE), 2, rev)) , col=gray((0:255
 With a little extra effort, we can create a CSV-formatted file that contains our predictions for all of the test data.
 After running the below command, you can submit the ``submission.csv`` file to the [Kaggle competition](https://www.kaggle.com/c/digit-recognizer/submit)!
 
-```{.python .input  n=10}
+```R
 submission <- data.frame(ImageId=1:ncol(test_x), Label=predicted_labels)
 write.csv(submission, file='submission.csv', row.names=FALSE,  quote=FALSE)
 ```
@@ -177,7 +177,7 @@ The specific convolutional network we use is the [LeNet](http://yann.lecun.com/e
 
 Here's how we can construct the LeNet network:
 
-```{.python .input  n=10}
+```R
 # declare input data
 data <- mx.symbol.Variable('data')
 # first convolutional layer: 20 filters
@@ -206,7 +206,7 @@ In convolutional neural networks, it is important to *flatten* the spatial outpu
 
 We also reshape our data matrices into spatially-arranged arrays, which is important since convolutional layers are highly sensitive to the spatial layout of their inputs.
 
-```{.python .input  n=11}
+```R
 train_array <- train_x
 dim(train_array) <- c(28, 28, 1, ncol(train_x))
 test_array <- test_x
@@ -215,7 +215,7 @@ dim(test_array) <- c(28, 28, 1, ncol(test_x))
 
 Before training our convolutional network, we once again specify what devices to run computations on.
 
-```{.python .input  n=18}
+```R
 n.gpu <- 1 # you can set this to the number of GPUs available on your machine
 
 device.cpu <- mx.cpu()
@@ -228,7 +228,7 @@ We can pass a list of devices to ask MXNet to train on multiple GPUs (you can do
 
 Start by training our convolutional neural network on the CPU first. Because this takes a bit time, we run it for just one training epoch:
 
-```{.python .input  n=13}
+```R
 mx.set.seed(0)
 model <- mx.model.FeedForward.create(lenet, X=train_array, y=train_y,
             ctx=device.cpu, num.round=1, array.batch.size=100,
@@ -243,7 +243,7 @@ We could also train the same model using the GPU instead, which can significantl
 
 **Note:** The below command that specifies GPU training will only work if the GPU-version of MXNet has been properly installed. To avoid issues, we set the Boolean flag ``use_gpu`` based on whether or not a GPU is detected in the current environment.
 
-```{.python .input  n=20}
+```R
 use_gpu <- !inherits(try(mx.nd.zeros(1,mx.gpu()), silent = TRUE), 'try-error') # TRUE if GPU is detected.
 if (use_gpu) {
     mx.set.seed(0)
@@ -257,7 +257,7 @@ if (use_gpu) {
 
 Finally, we can submit the convolutional neural network predictions to Kaggle to see if our ranking in the competition has improved:
 
-```{.python .input  n=15}
+```R
 preds <- predict(model, test_array)
 predicted_labels <- max.col(t(preds)) - 1
 submission <- data.frame(ImageId=1:ncol(test_x), Label=predicted_labels)

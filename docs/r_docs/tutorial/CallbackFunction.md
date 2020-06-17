@@ -21,7 +21,7 @@ This tutorial provides guidelines for using and writing callback functions, whic
 
 Let’s begin with a small example. We can build and train a model with the following code:
 
-```{.python .input .R}
+```R
 library(mxnet)
 data(BostonHousing, package="mlbench")
 train.ind = seq(1, 506, 3)
@@ -49,7 +49,7 @@ The **mxnet** package provides two built-in callback functions: ``mx.callback.sa
 
 ``mx.callback.save.checkpoint`` saves a checkpoint to files during each period iteration.
 
-```{.python .input .R}
+```R
 model <- mx.model.FeedForward.create(
    lro, X=train.x, y=train.y,
    eval.data=list(data=test.x, label=test.y),
@@ -60,7 +60,7 @@ model <- mx.model.FeedForward.create(
 
 ``mx.callback.log.train.metric`` logs a training metric each period. You can use it either as a ``batch.end.callback`` or an ``epoch.end.callback``
 
-```{.python .input .R}
+```R
 model <- mx.model.FeedForward.create(
            lro, X=train.x, y=train.y,
            eval.data=list(data=test.x, label=test.y),
@@ -71,7 +71,7 @@ model <- mx.model.FeedForward.create(
 
 You also can save the training and evaluation errors for later use by passing a reference class:
 
-```{.python .input .R}
+```R
 logger <- mx.metric.logger$new()
 model <- mx.model.FeedForward.create(
   lro, X=train.x, y=train.y,
@@ -81,11 +81,11 @@ model <- mx.model.FeedForward.create(
   epoch.end.callback = mx.callback.log.train.metric(5, logger))
 ```
 
-```{.python .input .R}
+```R
 head(logger$train)
 ```
 
-```{.python .input .R}
+```R
 head(logger$eval)
 ```
 
@@ -95,7 +95,7 @@ You can find the source code for the two callback functions on [GitHub](https://
 
 Basically, all callback functions follow the following structure:
 
-```{.python .input .R}
+```R
 mx.callback.fun <- function() {
   function(iteration, nbatch, env, verbose = FALSE) {
   }
@@ -104,7 +104,7 @@ mx.callback.fun <- function() {
 
 The following ``mx.callback.save.checkpoint`` function is stateless. It gets the model from the environment and saves it:
 
-```{.python .input .R}
+```R
  mx.callback.save.checkpoint <- function(prefix, period=1) {
       function(iteration, nbatch, env, verbose = FALSE) {
       if (iteration %% period == 0) {
@@ -118,7 +118,7 @@ The following ``mx.callback.save.checkpoint`` function is stateless. It gets the
 
 ``mx.callback.log.train.metric`` is a little more complex. It holds a reference class and updates it during the training process:
 
-```{.python .input .R}
+```R
 mx.callback.log.train.metric <- function(period, logger=NULL) {
   function(iteration, nbatch, env, verbose = FALSE) {
 if (nbatch %% period == 0 && !is.null(env$metric)) {
@@ -150,7 +150,7 @@ Can we **return(FALSE)**?
 Yes! You can stop the training early with **return(FALSE)**.
 See the following examples:
 
-```{.python .input .R}
+```R
 mx.callback.early.stop <- function(eval.metric) {
   function(iteration, nbatch, env, verbose = FALSE) {
 if (!is.null(env$metric)) {
