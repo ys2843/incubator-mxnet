@@ -317,4 +317,4 @@ We also repeated the above experiments to generate the next 100 samples to 301st
 
 The above tutorial is just for demonstration purposes and has not been tuned extensively for accuracy.
 
-For more tutorials on MXNet-R, head on to [MXNet-R tutorials](/api/r/docs/tutorials)
+For more tutorials on MXNet-R, head on to [MXNet-R tutorials](./index)
