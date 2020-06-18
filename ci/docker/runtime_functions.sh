@@ -1598,11 +1598,11 @@ build_r_docs() {
     
     pushd $r_root
 
-    R_LIBS=/tmp/r-site-library R CMD Rd2pdf . --no-preview --encoding=utf8 -o ../$docs_build_path/$r_pdf
+    R_LIBS=/tmp/r-site-library R CMD Rd2pdf . --no-preview --encoding=utf8 -o ../$docs_build_path/api/$r_pdf
 
     popd
 
-    GZIP=-9 tar zcvf $artifacts_path $docs_build_path
+    GZIP=-9 tar -C $docs_build_path -zcvf $artifacts_path .
 
     popd
 }
