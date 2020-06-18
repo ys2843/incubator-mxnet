@@ -195,7 +195,3 @@ It's a macaw!
 Reference
 ---------
 [1] Ioffe, Sergey, and Christian Szegedy. "Batch normalization: Accelerating deep network training by reducing internal covariate shift." arXiv preprint arXiv:1502.03167 (2015).
-
-## Next Steps
-* [Handwritten Digits Classification Competition](https://mxnet.io/tutorials/r/mnistCompetition.html)
-* [Character Language Model using RNN](https://mxnet.io/tutorials/r/charRnnModel.html)

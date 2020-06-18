@@ -214,8 +214,3 @@ parallel.
 
 The actual computations are finished, allowing us to copy the results someplace else, such as `as.array(a)` or `mx.nd.save(a, "temp.dat")`. To write highly parallelized codes, we only need to postpone when we need
 the results.
-
-## Next Steps
-* [Symbol](/tutorials/symbol)
-* [Classify Real-World Images with Pre-trained Model](/tutorials/ClassifyImageWithPretrainedModel)
-* [Character Language Model using RNN](/tutorials/charRnn)

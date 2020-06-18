@@ -107,7 +107,3 @@ extremely efficient.  We also provide fine-grained operators for more flexible
 composition. Because MXNet does more in-place memory allocation, it can
 be more memory efficient than CXXNet and gets to the same runtime with
 greater flexibility.
-
-## Next Steps
-* [Classify Real-World Images with Pre-trained Model](/tutorials/ClassifyImageWithPretrainedModel)
-* [Character Language Model using RNN](/tutorials/charRnn)
