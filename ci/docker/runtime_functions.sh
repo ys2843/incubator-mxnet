@@ -1574,10 +1574,10 @@ build_r_docs() {
 
     build_docs_setup
     r_root='R-package'
-    r_docs_root='/docs/r_docs'
+    r_docs_root='docs/r_docs'
     r_pdf='mxnet-r-reference-manual.pdf'
-    docs_build_path='/docs/r_docs/_build/html'
-    artifacts_path='/docs/_build/r-artifacts.tgz'
+    docs_build_path='docs/r_docs/_build/html'
+    artifacts_path='docs/_build/r-artifacts.tgz'
 
     mkdir -p $r_docs_root/man
     cp -rf $r_root/man/. $r_docs_root/man/
@@ -1598,7 +1598,7 @@ build_r_docs() {
     
     pushd $r_root
 
-    R_LIBS=/tmp/r-site-library R CMD Rd2pdf . --no-preview --encoding=utf8 -o $r_docs_root/api/$r_pdf
+    R_LIBS=/tmp/r-site-library R CMD Rd2pdf . --no-preview --encoding=utf8 -o ../$r_docs_root/api/$r_pdf
 
     popd
 
