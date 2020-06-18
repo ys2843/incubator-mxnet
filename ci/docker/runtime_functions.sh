@@ -1580,7 +1580,7 @@ build_r_docs() {
     artifacts_path='docs/_build/r-artifacts.tgz'
 
     mkdir -p $r_docs_root/man
-    cp -rf $r_root/man/. $r_docs_root/man/
+    cp -rf /work/mxnet/R-package/man/. $r_docs_root/man/
 
     unittest_ubuntu_minimal_R
 
