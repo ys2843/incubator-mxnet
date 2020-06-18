@@ -92,8 +92,6 @@ In the example, *net* is used as a function to apply to an existing symbol
 
 The [model API](https://github.com/apache/incubator-mxnet/blob/master/R-package/R/model.R) is a thin wrapper around the symbolic executors to support neural net training.
 
-We encourage you to read [Symbolic Configuration and Execution in Pictures for python package](/api/python/symbol_in_pictures/symbol_in_pictures.md)for a detailed explanation of concepts in pictures.
-
 ## How Efficient Is the Symbolic API?
 
 The Symbolic API brings the efficient C++
