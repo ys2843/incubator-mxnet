@@ -1582,7 +1582,7 @@ build_r_docs() {
     unittest_ubuntu_minimal_R
 
     mkdir -p $r_docs_root/api/man
-    cp -rf /work/mxnet/R-package/man/. $r_docs_root/api/man/
+    cp -rf $r_root/man/. $r_docs_root/api/man/
 
     pushd $r_docs_root
     eval "$(/work/miniconda/bin/conda shell.bash hook)"
@@ -1598,11 +1598,11 @@ build_r_docs() {
     
     pushd $r_root
 
-    R_LIBS=/tmp/r-site-library R CMD Rd2pdf . --no-preview --encoding=utf8 -o ../$r_docs_root/api/$r_pdf
+    R_LIBS=/tmp/r-site-library R CMD Rd2pdf . --no-preview --encoding=utf8 -o ../$docs_build_path/$r_pdf
 
     popd
 
-    GZIP=-9 tar zcvf $artifacts_path $r_docs_root
+    GZIP=-9 tar zcvf $artifacts_path $docs_build_path
 
     popd
 }
