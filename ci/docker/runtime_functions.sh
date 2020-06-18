@@ -1581,8 +1581,8 @@ build_r_docs() {
 
     unittest_ubuntu_minimal_R
 
-    mkdir -p $r_docs_root/man
-    cp -rf /work/mxnet/R-package/man/. $r_docs_root/man/
+    mkdir -p $r_docs_root/api/man
+    cp -rf /work/mxnet/R-package/man/. $r_docs_root/api/man/
 
     pushd $r_docs_root
     eval "$(/work/miniconda/bin/conda shell.bash hook)"
