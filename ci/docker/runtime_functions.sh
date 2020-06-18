@@ -1579,10 +1579,10 @@ build_r_docs() {
     docs_build_path='docs/r_docs/_build/html'
     artifacts_path='docs/_build/r-artifacts.tgz'
 
+    unittest_ubuntu_minimal_R
+
     mkdir -p $r_docs_root/man
     cp -rf /work/mxnet/R-package/man/. $r_docs_root/man/
-
-    unittest_ubuntu_minimal_R
 
     pushd $r_docs_root
     eval "$(/work/miniconda/bin/conda shell.bash hook)"
