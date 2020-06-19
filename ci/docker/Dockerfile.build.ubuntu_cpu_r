@@ -36,10 +36,6 @@ COPY install/r.gpg /work/
 RUN /work/ubuntu_r.sh
 
 # New R docs site dependency, same with Python docs
-COPY install/ubuntu_python.sh /work/
-COPY install/requirements /work/
-RUN /work/ubuntu_python.sh
-
 COPY install/ubuntu_docs.sh /work/
 RUN /work/ubuntu_docs.sh
 
