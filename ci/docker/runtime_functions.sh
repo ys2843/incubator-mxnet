@@ -1573,17 +1573,19 @@ build_r_docs() {
     pushd .
 
     build_docs_setup
+    unittest_ubuntu_minimal_R
+
     r_root='R-package'
     r_docs_root='docs/r_docs'
     r_pdf='mxnet-r-reference-manual.pdf'
     docs_build_path='docs/r_docs/_build/html'
     artifacts_path='docs/_build/r-artifacts.tgz'
 
-    unittest_ubuntu_minimal_R
-
+    # Copy API Rd files
     mkdir -p $r_docs_root/api/man
     cp -rf $r_root/man/. $r_docs_root/api/man/
 
+    # Borrowed from build_python_docs, R site depends on the theme from Python docs
     pushd $r_docs_root
     eval "$(/work/miniconda/bin/conda shell.bash hook)"
     conda env create -f environment.yml -p /work/conda_env
@@ -1591,6 +1593,7 @@ build_r_docs() {
     pip install ../python_docs/themes/mx-theme
 
     make clean
+    # Translate Rd files to Rst for Sphinx-doc
     make docs
     make html
     
@@ -1598,6 +1601,7 @@ build_r_docs() {
     
     pushd $r_root
 
+    # Generate the PDF based on Rd files, output to new R site folder
     R_LIBS=/tmp/r-site-library R CMD Rd2pdf . --no-preview --encoding=utf8 -o ../$docs_build_path/api/$r_pdf
 
     popd
