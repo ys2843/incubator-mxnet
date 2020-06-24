@@ -1582,8 +1582,8 @@ build_r_docs() {
     artifacts_path='docs/_build/r-artifacts.tgz'
 
     # Copy API Rd files
-    mkdir -p $r_docs_root/api/man
-    cp -rf $r_root/man/. $r_docs_root/api/man/
+    # mkdir -p $r_docs_root/api/man
+    # cp -rf $r_root/man/. $r_docs_root/api/man/
 
     # Borrowed from build_python_docs, R site depends on the theme from Python docs
     pushd $r_docs_root
