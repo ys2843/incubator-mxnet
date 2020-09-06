@@ -1092,7 +1092,7 @@ def docs_preview() {
             utils.docker_run('ubuntu_cpu_jekyll', 'build_docs_preview', false)
 
             master_url = utils.get_jenkins_master_url()
-            if ( master_url == 'jenkins.mxnet-ci-dev.amazon-ml.com') {
+            if ( master_url == 'jenkins.mxnet-ci.amazon-ml.com') {
                 sh "ci/other/ci_deploy_doc.sh ${env.BRANCH_NAME} ${env.BUILD_NUMBER}"
             } else {
                 print "Skipping staging documentation publishing since we are not running in prod. Host: {$master_url}" 
