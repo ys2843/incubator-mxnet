@@ -1079,6 +1079,29 @@ def docs_jekyll() {
     }]
 }
 
+def docs_preview() {
+    return ['Prepare for publication of the full website': {
+      node(NODE_LINUX_CPU) {
+        ws('workspace/docs') {
+          timeout(time: max_time, unit: 'MINUTES') {
+            utils.init_git()
+
+            unstash 'jekyll-artifacts'
+            unstash 'python-artifacts'
+
+            utils.docker_run('ubuntu_cpu_jekyll', 'build_docs_preview', false)
+
+            master_url = utils.get_jenkins_master_url()
+            if ( master_url == 'jenkins.mxnet-ci-dev.amazon-ml.com') {
+                sh "ci/other/ci_deploy_doc.sh testBranch ${env.BUILD_NUMBER}"
+            } else {
+                print "Skipping staging documentation publishing since we are not running in prod. Host: {$master_url}" 
+            }
+          }
+        }
+      }
+    }]
+}
 
 // This is for publishing the full website
 // Assumes you have run all of the docs generation functions

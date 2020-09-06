@@ -43,8 +43,9 @@ core_logic: {
     custom_steps.docs_python('libmxnet'),
   ])
 
-  // TODO: add a website preview function
-
+  utils.parallel_stage('Preview', [
+    custom_steps.docs_preview()
+  ])
 }
 ,
 failure_handler: {

@@ -23,5 +23,10 @@ html:
 	cd src && bundle install && JEKYLL_ENV=production bundle exec jekyll build --config _config_prod.yml -d ../build/html && cd ..
 	wget https://mxnet-website-static-artifacts.s3.us-east-2.amazonaws.com/versions.zip && unzip versions.zip -d build/html && rm -rf build/html/__MACOSX && rm versions.zip
 
+pr:
+	mkdir -p build
+	wget -O src/assets/js/jquery-3.3.1.min.js https://code.jquery.com/jquery-3.3.1.min.js
+	cd src && bundle install && JEKYLL_ENV=production bundle exec jekyll build --config _config_prod.yml -d ../build/html && cd ..
+
 clean:
 	rm -rf build

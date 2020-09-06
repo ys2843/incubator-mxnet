@@ -1169,6 +1169,13 @@ build_c_docs() {
     popd
 }
 
+build_docs_preview() {
+    pushd docs/_build
+    tar -xzf jekyll-artifacts.tgz
+    api_folder='html/api'
+    mkdir -p $api_folder/python/docs && tar -xzf python-artifacts.tgz --directory $api_folder/python/docs
+    popd
+}
 
 build_docs() {
     pushd docs/_build
