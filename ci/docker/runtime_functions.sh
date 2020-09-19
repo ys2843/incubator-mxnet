@@ -1123,29 +1123,29 @@ build_jekyll_docs() {
 
 
 build_python_docs() {
-   set -ex
-   pushd .
+    set -ex
+    pushd .
 
-   build_docs_setup
+    build_docs_setup
 
-   pushd docs/python_docs
-   python3 -m pip install -r requirements
-   python3 -m pip install themes/mx-theme
-   python3 -m pip install -e /work/mxnet/python --user
+    pushd docs/python_docs
+    python3 -m pip install -r requirements
+    python3 -m pip install themes/mx-theme
+    python3 -m pip install -e /work/mxnet/python --user
 
-   export PATH=/home/jenkins_slave/.local/bin:$PATH
+    export PATH=/home/jenkins_slave/.local/bin:$PATH
 
-   pushd python
-   make clean
-   make html EVAL=0
+    pushd python
+    make clean
+    make html EVAL=0
 
-   GZIP=-9 tar zcvf python-artifacts.tgz -C build/_build/html .
-   popd
+    GZIP=-9 tar zcvf python-artifacts.tgz -C build/_build/html .
+    popd
 
-   mv python/python-artifacts.tgz /work/mxnet/docs/_build/
-   popd
+    mv python/python-artifacts.tgz /work/mxnet/docs/_build/
+    popd
 
-   popd
+    popd
 }
 
 
@@ -1173,9 +1173,11 @@ build_c_docs() {
 build_docs() {
     pushd docs/_build
     tar -xzf jekyll-artifacts.tgz
-    api_folder='html/api'
+    BRANCH=$(git branch --show-current)
+    python_doc_folder="html/versions/$BRANCH"
+
     # Python has it's own landing page/site so we don't put it in /docs/api
-    mkdir -p $api_folder/python/docs && tar -xzf python-artifacts.tgz --directory $api_folder/python/docs
+    mkdir -p $python_doc_folder/python/docs && tar -xzf python-artifacts.tgz --directory $python_doc_folder/python/docs
     GZIP=-9 tar -zcvf full_website.tgz -C html .
     popd
 }
@@ -1183,8 +1185,9 @@ build_docs() {
 build_docs_beta() {
     pushd docs/_build
     tar -xzf jekyll-artifacts.tgz
-    api_folder='html/api'
-    mkdir -p $api_folder/python/docs && tar -xzf python-artifacts.tgz --directory $api_folder/python/docs
+    BRANCH=$(git branch --show-current)
+    python_doc_folder="html/versions/$BRANCH"
+    mkdir -p $python_doc_folder/python/docs && tar -xzf python-artifacts.tgz --directory $python_doc_folder/python/docs
     GZIP=-9 tar -zcvf beta_website.tgz -C html .
     popd
 }
