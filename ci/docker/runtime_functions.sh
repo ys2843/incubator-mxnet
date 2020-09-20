@@ -1173,7 +1173,7 @@ build_c_docs() {
 build_docs() {
     pushd docs/_build
     tar -xzf jekyll-artifacts.tgz
-    BRANCH=$(git branch --show-current)
+    BRANCH=$(git rev-parse --abbrev-ref HEAD)
     python_doc_folder="html/versions/$BRANCH"
 
     # Python has it's own landing page/site so we don't put it in /docs/api
@@ -1185,7 +1185,7 @@ build_docs() {
 build_docs_beta() {
     pushd docs/_build
     tar -xzf jekyll-artifacts.tgz
-    BRANCH=$(git branch --show-current)
+    BRANCH=$(git rev-parse --abbrev-ref HEAD)
     python_doc_folder="html/versions/$BRANCH"
     mkdir -p $python_doc_folder/python/docs && tar -xzf python-artifacts.tgz --directory $python_doc_folder/python/docs
     GZIP=-9 tar -zcvf beta_website.tgz -C html .
