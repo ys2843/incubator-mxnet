@@ -1117,7 +1117,7 @@ def docs_prepare_beta() {
             unstash 'jekyll-artifacts'
             unstash 'python-artifacts'
 
-            utils.docker_run('ubuntu_cpu_jekyll', 'build_docs', false, env_vars: "BRANCH=${env.BRANCH_NAME}")
+            utils.docker_run('ubuntu_cpu_jekyll', 'build_docs', false, '500m', "BRANCH=${env.BRANCH_NAME}")
 
             // archive so the publish pipeline can access the artifact
             archiveArtifacts 'docs/_build/beta_website.tgz'
