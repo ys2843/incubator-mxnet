@@ -1093,7 +1093,7 @@ def docs_prepare() {
             unstash 'jekyll-artifacts'
             unstash 'python-artifacts'
 
-            utils.docker_run('ubuntu_cpu_jekyll', 'build_docs', false, env_vars: "BRANCH=${env.BRANCH_NAME}")
+            utils.docker_run('ubuntu_cpu_jekyll', 'build_docs', false, '500m', "BRANCH=${env.BRANCH_NAME}")
 
             // only stash if we're going to unstash later
             // utils.pack_lib('full_website', 'docs/_build/full_website.tgz', false)
